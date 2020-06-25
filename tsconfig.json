@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "allowJs": true,
+    "target": "ESNEXT",
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs"
+  },
+  "include": [
+    "lib-ts"
+  ]
+}
