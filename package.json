@@ -56,7 +56,6 @@
     "setprototypeof": "1.1.1",
     "statuses": "~1.5.0",
     "type-is": "~1.6.18",
-    "utils-merge": "1.0.1",
     "vary": "~1.1.2"
   },
   "devDependencies": {
@@ -82,7 +81,6 @@
     "@types/serve-static": "^1.13.4",
     "@types/statuses": "^2.0.0",
     "@types/type-is": "^1.6.3",
-    "@types/utils-merge": "0.0.28",
     "@types/vary": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^3.4.0",
     "@typescript-eslint/parser": "^3.4.0",
