@@ -8,6 +8,9 @@
     "module": "commonjs"
   },
   "include": [
-    "lib-ts"
-  ]
+    "lib-js"
+  ],
+  "lib": ["esnext"],
+  "strict": true
 }
+
