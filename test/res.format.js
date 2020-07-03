@@ -125,7 +125,7 @@ describe('res', function(){
 
     describe('in router', function(){
       var app = express();
-      var router = express.Router();
+      var router = new express.Router();
 
       router.get('/', function(req, res, next){
         res.format({

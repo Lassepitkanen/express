@@ -34,7 +34,7 @@ describe('app.router', function(){
   })
 
   describe('methods', function(){
-    methods.concat('del').forEach(function(method){
+    methods.concat('delete').forEach(function(method){
       if (method === 'connect') return;
 
       it('should include ' + method.toUpperCase(), function(done){
@@ -924,7 +924,7 @@ describe('app.router', function(){
   describe('when next("router") is called', function () {
     it('should jump out of router', function (done) {
       var app = express()
-      var router = express.Router()
+      var router = new express.Router()
 
       function fn (req, res, next) {
         res.set('X-Hit', '1')

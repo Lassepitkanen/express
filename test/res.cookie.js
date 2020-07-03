@@ -1,9 +1,9 @@
 
-var express = require('../')
+const express = require('../')
   , request = require('supertest')
-  , cookie = require('cookie')
   , cookieParser = require('cookie-parser')
-var merge = require('utils-merge');
+
+import { parse } from '../lib/deps/cookie/index.js';
 
 describe('res', function(){
   describe('.cookie(name, object)', function(){
@@ -104,7 +104,7 @@ describe('res', function(){
         var app = express();
 
         var options = { maxAge: 1000 };
-        var optionsCopy = merge({}, options);
+        var optionsCopy = Object.assign({}, options);
 
         app.use(function(req, res){
           res.cookie('name', 'tobi', options)
@@ -131,7 +131,7 @@ describe('res', function(){
         .get('/')
         .end(function(err, res){
           var val = res.headers['set-cookie'][0];
-          val = cookie.parse(val.split('.')[0]);
+          val = parse(val.split('.')[0]);
           val.user.should.equal('s:j:{"name":"tobi"}');
           done();
         })

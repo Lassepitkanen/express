@@ -3,7 +3,7 @@ var express = require('../')
   , request = require('supertest');
 
 describe('app.del()', function(){
-  it('should alias app.delete()', function(done){
+  it.skip('should alias app.delete()', function(done){
     var app = express();
 
     app.del('/tobi', function(req, res){

@@ -6,7 +6,7 @@ describe('OPTIONS', function(){
   it('should default to the routes defined', function(done){
     var app = express();
 
-    app.del('/', function(){});
+    app.delete('/', function(){});
     app.get('/users', function(req, res){});
     app.put('/users', function(req, res){});
 
@@ -19,7 +19,7 @@ describe('OPTIONS', function(){
   it('should only include each method once', function(done){
     var app = express();
 
-    app.del('/', function(){});
+    app.delete('/', function(){});
     app.get('/users', function(req, res){});
     app.put('/users', function(req, res){});
     app.get('/users', function(req, res){});
@@ -75,7 +75,7 @@ describe('OPTIONS', function(){
   describe('when error occurs in response handler', function () {
     it('should pass error to callback', function (done) {
       var app = express();
-      var router = express.Router();
+      var router = new express.Router();
 
       router.get('/users', function(req, res){});
 
