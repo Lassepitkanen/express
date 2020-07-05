@@ -6,7 +6,7 @@ var fs = require('fs')
 var http = require('http')
 var path = require('path')
 var request = require('supertest')
-var send = require('../lib/deps/send/index.js');
+import { send } from '../lib/deps/send/index.js'
 
 // test server
 
@@ -1419,39 +1419,6 @@ describe('send(file, options)', function () {
   })
 })
 
-describe('send.mime', function () {
-  it('should be exposed', function () {
-    assert.ok(send.mime)
-  })
-
-  describe('.default_type', function () {
-    before(function () {
-      this.default_type = send.mime.default_type
-    })
-
-    afterEach(function () {
-      send.mime.default_type = this.default_type
-    })
-
-    it('should change the default type', function (done) {
-      send.mime.default_type = 'text/plain'
-
-      request(createServer({ root: fixtures }))
-        .get('/no_ext')
-        .expect('Content-Type', 'text/plain; charset=UTF-8')
-        .expect(200, done)
-    })
-
-    it('should not add Content-Type for undefined default', function (done) {
-      send.mime.default_type = undefined
-
-      request(createServer({ root: fixtures }))
-        .get('/no_ext')
-        .expect(shouldNotHaveHeader('Content-Type'))
-        .expect(200, done)
-    })
-  })
-})
 
 function createServer (opts, fn) {
   return http.createServer(function onRequest (req, res) {

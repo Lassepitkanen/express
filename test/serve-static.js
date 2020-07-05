@@ -3,7 +3,7 @@ var Buffer = require('safe-buffer').Buffer
 var http = require('http')
 var path = require('path')
 var request = require('supertest')
-import { serveStatic } from '../lib/deps/serve-static/index.js';
+import serveStatic from '../lib/deps/serve-static/index.js';
 
 var fixtures = path.join(__dirname, '/fixtures')
 var relative = path.relative(process.cwd(), fixtures)
