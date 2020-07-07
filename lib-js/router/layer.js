@@ -14,7 +14,7 @@
  */
 
 
-const pathRegexp = require('path-to-regexp');
+import { pathtoRegexp } from '../deps/path-to-regexp/index.js';
 import dbg from 'debug';
 const debug = dbg('express:router:layer');
 
@@ -41,7 +41,7 @@ export class Layer {
     this.name = fn.name || '<anonymous>';;
     this.params;
     this.path;
-    this.regexp = pathRegexp(path, this.keys = [], opts);
+    this.regexp = pathtoRegexp(path, this.keys = [], opts);
     this.regexpFastSlash = path === '*';
     this.regexpFastSlash = path === '/' && opts.end === false;
     this.keys;

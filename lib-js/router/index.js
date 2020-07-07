@@ -15,12 +15,12 @@
 
 import { Route } from './route.js';
 import { Layer } from './layer.js';
-const methods = require('methods');
+import { methods } from '../deps/methods/index.js';
 import dbg from 'debug';
 const debug = dbg('express:router');
 const deprecate = require('depd')('express');
-import { flatten } from 'array-flatten';
-const parseUrl = require('parseurl');
+import { flatten } from '../deps/array-flatten/index.js';
+import { parseUrl } from '../deps/parseurl/index.js';
 
 
 /**

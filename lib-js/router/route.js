@@ -14,9 +14,9 @@
  */
 import dbg from 'debug';
 const debug = dbg('express:router:route');
-import { flatten } from 'array-flatten';
+import { flatten } from '../deps/array-flatten/index.js';
 import { Layer } from './layer.js';
-const methods = require('methods');
+import { methods } from '../deps/methods/index.js';
 
 /**
  * Module variables.
