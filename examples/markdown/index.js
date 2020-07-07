@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var escapeHtml = require('escape-html');
+import { escapeHtml } from '../../lib/deps/escape-html/index.js';
 var express = require('../..');
 var fs = require('fs');
 var marked = require('marked');

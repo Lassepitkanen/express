@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var escapeHtml = require('escape-html')
+import { escapeHtml } from '../../lib/deps/escape-html/index.js';
 var express = require('../../lib/express');
 
 var verbose = process.env.NODE_ENV !== 'test'
