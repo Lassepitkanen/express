@@ -12,9 +12,8 @@
  * Module dependencies.
  */
 
-
-const parseUrl = require('parseurl');
-import * as qs from 'qs';
+import { parseUrl } from '../deps/parseurl/index.js';
+import qs from '../deps/qs/index.js';
 
 /**
  * @param {Object} options
@@ -38,7 +37,7 @@ export function query(options) {
 
   return function query(req, res, next){
     if (!req.query) {
-      var val = parseUrl(req).query;
+      const val = parseUrl(req).query;
       req.query = queryparse(val, opts);
     }
 
