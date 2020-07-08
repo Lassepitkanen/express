@@ -1,6 +1,6 @@
 "use strict";
 
-import { Buffer } from 'safe-buffer';
+import { Buffer } from 'buffer';
 
 // NOTE: Due to 'stream' module being pretty large (~100Kb, significant in browser environments),
 // we opt to dependency-inject it instead of creating a hard dependency.

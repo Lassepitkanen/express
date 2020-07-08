@@ -1,6 +1,6 @@
 "use strict";
 
-import { Buffer } from 'safe-buffer';
+import { Buffer } from 'buffer';
 import Streams from './streams.js';
 import { PrependBOM, StripBOM } from './bom-handling.js';
 
