@@ -11,18 +11,14 @@
 /**
  * Module dependencies.
  */
-const bodyParser = require('body-parser');
-import { EventEmitter } from 'events';
-const mixin = require('merge-descriptors');
-// const proto = require('./application');
+import bodyParser from './deps/body-parser/index.js';
 import { App } from './application.js';
 import { Route as route } from './router/route.js';
 import { Router as router } from './router/index.js';
-// var router = require('./router/index.js');
-const req = require('./request');
-// import { Req } from './request';
-const res = require('./response');
-// import { Res } from './response.js';
+import { req } from './request.js';
+import { res } from './response.js';
+import { query } from './middleware/query.js';
+import serveStatic from './deps/serve-static/index.js';
 
 
 /**
@@ -39,20 +35,19 @@ exports = module.exports = createApplication;
  */
 
 function createApplication() {
-  const app = function(req, res, next) {
+  const app = function (req, res, next) {
     app.handle(req, res, next);
-  };
+  }
 
-  mixin(app, EventEmitter.prototype, false);
-  mixin(app, App.prototype, false);
+  Object.setPrototypeOf(app, new App());
 
   // expose the prototype that will get set on requests
-  app.request = Object.create(req, {
+  app.request = Object.create(new req(), {
     app: { configurable: true, enumerable: true, writable: true, value: app }
   })
 
   // expose the prototype that will get set on responses
-  app.response = Object.create(res, {
+  app.response = Object.create(new res(), {
     app: { configurable: true, enumerable: true, writable: true, value: app }
   })
 
@@ -77,9 +72,11 @@ export const Router = router;
  * Expose middleware
  */
 export const json = bodyParser.json;
-exports.query = require('./middleware/query');
+exports.query = query;
 export const raw = bodyParser.raw
-exports.static = require('serve-static');
+// exports.static = serveStatic;
+
+exports.static = serveStatic;
 export const text = bodyParser.text;
 export const urlencoded = bodyParser.urlencoded;
 

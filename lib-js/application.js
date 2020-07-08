@@ -14,10 +14,10 @@
  */
 
 
-const finalhandler = require('finalhandler');
+import finalhandler from './deps/finalhandler/index.js';
 import { Router } from './router/index.js';
 // var Router = require('./router/index.js');
-const methods = require('methods');
+import { methods } from './deps/methods/index.js';
 import * as middleware  from './middleware/init.js';
 import { query } from './middleware/query.js';
 import dbg from 'debug';
@@ -25,8 +25,9 @@ const debug = dbg('express:application');
 import { View } from './view.js';
 import * as http from 'http';
 import { compileETag, compileQueryParser, compileTrust } from './utils.js';
-import { flatten } from 'array-flatten';
+import { flatten } from './deps/array-flatten/index.js';
 import { resolve } from 'path';
+import { EventEmitter } from 'events';
 const slice = Array.prototype.slice;
 
 
@@ -46,8 +47,9 @@ const trustProxyDefaultSymbol = '@@symbol:trust_proxy_default';
  *
  * @private
  */
-export class App {
+export class App extends EventEmitter {
   constructor() {
+    super();
     this.cache = {};
     this.settings = {};
     this.engines = {};
@@ -100,7 +102,7 @@ export class App {
     });
 
     // setup locals
-    this.locals = Object.create(null);
+    this.locals = {};
 
     // top-most app is mounted at /
     this.mountpath = '/';
