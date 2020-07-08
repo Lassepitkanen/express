@@ -23,7 +23,7 @@ const debug = dbg('express:router:layer');
  * @private
  */
 
-const hasOwnProperty = Object.prototype.hasOwnProperty;
+const hasOwnProperty = Object.hasOwnProperty;
 
 /**
  * Module exports.

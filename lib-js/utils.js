@@ -12,18 +12,16 @@
  * @api private
  */
 
-const ContentDisposition = require('content-disposition');
+
+import { contentDisposition as ContentDisposition } from './deps/content-disposition/index.js';
 const deprecate = require('depd')('express');
-// const Flatten = require('array-flatten');
-const Etag = require('etag');
-
-
-import { flatten as Flatten } from 'array-flatten';
-import { Buffer } from 'safe-buffer';
-import * as contentType from 'content-type';
-import { mime } from 'send';
-import * as proxyaddr from 'proxy-addr';
-import * as qs from 'qs';
+import { etag as Etag } from './deps/etag/index.js';
+import { flatten as Flatten } from './deps/array-flatten/index.js';
+import { Buffer } from 'buffer';
+import { parse, format } from './deps/content-type/index.js';
+import { mime } from './deps/mime/index.js';
+import { compile } from './deps/proxy-addr/index.js';
+import qs from './deps/qs/index.js';
 import * as querystring from 'querystring';
 
 
@@ -227,7 +225,7 @@ export function compileTrust(val) {
     val = val.split(/ *, */);
   }
 
-  return proxyaddr.compile(val || []);
+  return compile(val || []);
 }
 
 /**
@@ -244,13 +242,13 @@ export function setCharset(type, charset) {
   }
 
   // parse type
-  var parsed = contentType.parse(type);
+  var parsed = parse(type);
 
   // set charset
   parsed.parameters.charset = charset;
 
   // format type
-  return contentType.format(parsed);
+  return format(parsed);
 }
 
 /**
