@@ -6,9 +6,18 @@ var express = require('../')
   , assert = require('assert');
 
 describe('Router', function(){
-  it('should return a function with router methods', function() {
+  // it('should return a function with router methods', function() {
+  //   var router = new Router();
+  //   assert(typeof router === 'function')
+
+  //   assert(typeof router.get === 'function')
+  //   assert(typeof router.handle === 'function')
+  //   assert(typeof router.use === 'function')
+  // });
+
+  it('should return an object with router methods', function() {
     var router = new Router();
-    assert(typeof router === 'function')
+    assert(typeof router === 'object')
 
     assert(typeof router.get === 'function')
     assert(typeof router.handle === 'function')

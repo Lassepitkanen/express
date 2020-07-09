@@ -18,7 +18,7 @@ describe('req', function(){
 
     it('should contain lower path', function(done){
       var app = express()
-      var sub = express.Router()
+      var sub = new express.Router()
 
       sub.get('/:b', function(req, res){
         res.end(req.baseUrl)
@@ -32,9 +32,9 @@ describe('req', function(){
 
     it('should contain full lower path', function(done){
       var app = express()
-      var sub1 = express.Router()
-      var sub2 = express.Router()
-      var sub3 = express.Router()
+      var sub1 = new express.Router()
+      var sub2 = new express.Router()
+      var sub3 = new express.Router()
 
       sub3.get('/:d', function(req, res){
         res.end(req.baseUrl)
@@ -51,9 +51,9 @@ describe('req', function(){
     it('should travel through routers correctly', function(done){
       var urls = []
       var app = express()
-      var sub1 = express.Router()
-      var sub2 = express.Router()
-      var sub3 = express.Router()
+      var sub1 = new express.Router()
+      var sub2 = new express.Router()
+      var sub3 = new express.Router()
 
       sub3.get('/:d', function(req, res, next){
         urls.push('0@' + req.baseUrl)

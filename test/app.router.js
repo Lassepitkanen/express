@@ -339,7 +339,7 @@ describe('app.router', function(){
 
       app.use('/user/', function (req, res, next) {
         req.params = 3; // wat?
-        router(req, res, next);
+        router.handle(req, res, next);
       });
 
       request(app)
@@ -356,7 +356,7 @@ describe('app.router', function(){
       });
 
       app.use('/user/id:(\\d+)', function (req, res, next) {
-        router(req, res, function (err) {
+        router.handle(req, res, function (err) {
           var keys = Object.keys(req.params).sort();
           res.send(keys.map(function(k){ return [k, req.params[k]] }));
         });
