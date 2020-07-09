@@ -126,7 +126,7 @@ DBCSCodec.prototype._getDecodeTrieNode = function(addr) {
     var bytes = [];
     for (; addr > 0; addr >>= 8)
         bytes.push(addr & 0xFF);
-    if (bytes.length == 0)
+    if (bytes.length === 0)
         bytes.push(0);
 
     var node = this.decodeTables[0];
@@ -196,7 +196,7 @@ DBCSCodec.prototype._addDecodeChunk = function(chunk) {
 // Encoder helpers
 DBCSCodec.prototype._getEncodeBucket = function(uCode) {
     var high = uCode >> 8; // This could be > 0xFF because of astral characters.
-    if (this.encodeTable[high] === undefined)
+    if (this.encodeTable[high] === void 0)
         this.encodeTable[high] = UNASSIGNED_NODE.slice(0); // Create bucket on demand.
     return this.encodeTable[high];
 }
@@ -237,7 +237,7 @@ DBCSCodec.prototype._setEncodeSequence = function(seq, dbcsCode) {
             node = oldVal;
         else {
             node = node[uCode] = {}
-            if (oldVal !== undefined)
+            if (oldVal !== void 0)
                 node[DEF_CHAR] = oldVal
         }
     }
@@ -271,7 +271,7 @@ DBCSCodec.prototype._fillEncodeTable = function(nodeIdx, prefix, skipEncodeChars
 function DBCSEncoder(options, codec) {
     // Encoder state
     this.leadSurrogate = -1;
-    this.seqObj = undefined;
+    this.seqObj = void 0;
 
     // Static data
     this.encodeTable = codec.encodeTable;
@@ -327,35 +327,35 @@ DBCSEncoder.prototype.write = function(str) {
 
         // 2. Convert uCode character.
         var dbcsCode = UNASSIGNED;
-        if (seqObj !== undefined && uCode != UNASSIGNED) { // We are in the middle of the sequence
+        if (seqObj !== void 0 && uCode != UNASSIGNED) { // We are in the middle of the sequence
             var resCode = seqObj[uCode];
             if (typeof resCode === 'object') { // Sequence continues.
                 seqObj = resCode;
                 continue;
 
-            } else if (typeof resCode == 'number') { // Sequence finished. Write it.
+            } else if (typeof resCode === 'number') { // Sequence finished. Write it.
                 dbcsCode = resCode;
 
-            } else if (resCode == undefined) { // Current character is not part of the sequence.
+            } else if (resCode === void 0) { // Current character is not part of the sequence.
 
                 // Try default character for this sequence
                 resCode = seqObj[DEF_CHAR];
-                if (resCode !== undefined) {
+                if (resCode !== void 0) {
                     dbcsCode = resCode; // Found. Write it.
                     nextChar = uCode; // Current character will be written too in the next iteration.
 
                 } else {
-                    // TODO: What if we have no default? (resCode == undefined)
+                    // TODO: What if we have no default? (resCode == void 0)
                     // Then, we should write first char of the sequence as-is and try the rest recursively.
                     // Didn't do it for now because no encoding has this situation yet.
                     // Currently, just skip the sequence and write current char.
                 }
             }
-            seqObj = undefined;
+            seqObj = void 0;
         }
         else if (uCode >= 0) {  // Regular character
             var subtable = this.encodeTable[uCode >> 8];
-            if (subtable !== undefined)
+            if (subtable !== void 0)
                 dbcsCode = subtable[uCode & 0xFF];
 
             if (dbcsCode <= SEQ_START) { // Sequence start
@@ -401,14 +401,14 @@ DBCSEncoder.prototype.write = function(str) {
 }
 
 DBCSEncoder.prototype.end = function() {
-    if (this.leadSurrogate === -1 && this.seqObj === undefined)
+    if (this.leadSurrogate === -1 && this.seqObj === void 0)
         return; // All clean. Most often case.
 
     var newBuf = Buffer.alloc(10), j = 0;
 
     if (this.seqObj) { // We're in the sequence.
         var dbcsCode = this.seqObj[DEF_CHAR];
-        if (dbcsCode !== undefined) { // Write beginning of the sequence.
+        if (dbcsCode !== void 0) { // Write beginning of the sequence.
             if (dbcsCode < 0x100) {
                 newBuf[j++] = dbcsCode;
             }
@@ -419,7 +419,7 @@ DBCSEncoder.prototype.end = function() {
         } else {
             // See todo above.
         }
-        this.seqObj = undefined;
+        this.seqObj = void 0;
     }
 
     if (this.leadSurrogate !== -1) {

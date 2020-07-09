@@ -152,7 +152,7 @@ const normalizeStringifyOptions = function normalizeStringifyOptions(opts) {
     return defaults;
   }
 
-  if (opts.encoder !== null && opts.encoder !== undefined && typeof opts.encoder !== 'function') {
+  if (opts.encoder !== null && opts.encoder !== void 0 && typeof opts.encoder !== 'function') {
     throw new TypeError('Encoder has to be a function.');
   }
 

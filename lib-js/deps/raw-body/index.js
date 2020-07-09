@@ -71,7 +71,7 @@ export default function getRawBody (stream, options, callback) {
   }
 
   // validate callback is a function, if provided
-  if (done !== undefined && typeof done !== 'function') {
+  if (done !== void 0 && typeof done !== 'function') {
     throw new TypeError('argument callback must be a function');
   }
 

@@ -148,7 +148,7 @@
   ipaddr.subnetMatch = function (address, rangeList, defaultName) {
     let i, rangeName, rangeSubnets, subnet;
 
-    if (defaultName === undefined || defaultName === null) {
+    if (defaultName === void 0 || defaultName === null) {
       defaultName = 'unicast';
     }
 
@@ -219,7 +219,7 @@
     // Checks if this address matches other one within given CIDR range.
     IPv4.prototype.match = function (other, cidrRange) {
       let ref;
-      if (cidrRange === undefined) {
+      if (cidrRange === void 0) {
         ref = other;
         other = ref[0];
         cidrRange = ref[1];
@@ -529,7 +529,7 @@
     IPv6.prototype.match = function (other, cidrRange) {
       let ref;
 
-      if (cidrRange === undefined) {
+      if (cidrRange === void 0) {
         ref = other;
         other = ref[0];
         cidrRange = ref[1];

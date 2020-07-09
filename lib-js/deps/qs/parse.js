@@ -50,7 +50,7 @@ const charsetSentinel = 'utf8=%E2%9C%93'; // encodeURIComponent('✓')
 const parseValues = function parseQueryStringValues(str, options) {
   const obj = {};
   const cleanStr = options.ignoreQueryPrefix ? str.replace(/^\?/, '') : str;
-  const limit = options.parameterLimit === Infinity ? undefined : options.parameterLimit;
+  const limit = options.parameterLimit === Infinity ? void 0 : options.parameterLimit;
   const parts = cleanStr.split(options.delimiter, limit);
   let skipIndex = -1; // Keep track of where the utf8 sentinel was found
   let i;
@@ -205,7 +205,7 @@ const normalizeParseOptions = function normalizeParseOptions(opts) {
     return defaults;
   }
 
-  if (opts.decoder !== null && opts.decoder !== undefined && typeof opts.decoder !== 'function') {
+  if (opts.decoder !== null && opts.decoder !== void 0 && typeof opts.decoder !== 'function') {
     throw new TypeError('Decoder has to be a function.');
   }
 
