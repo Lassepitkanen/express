@@ -39,18 +39,8 @@ const toString = Object.prototype.toString;
  * @public
  */
 
-export function Router(options) {
-  function router(req, res, next) {
-    router.handle(req, res, next);
-  }
 
-  // mixin Router class functions
-  Object.setPrototypeOf(router, new RouterA(options))
-  return router;
-}
-
-
-export class RouterA {
+export class Router {
   constructor(options) {
     const opts = options || {};
 
@@ -133,7 +123,6 @@ export class RouterA {
    */
   handle(req, res, out) {
     let self = this;
-
     debug('dispatching %s %s', req.method, req.url);
 
     let idx = 0;
@@ -267,7 +256,7 @@ export class RouterA {
       req.params = self.mergeParams
         ? mergeParams(layer.params, parentParams)
         : layer.params;
-        let layerPath = layer.path;
+      let layerPath = layer.path;
 
       // this should be done for the layer
       self.process_params(layer, paramcalled, req, res, function (err) {
@@ -358,7 +347,7 @@ export class RouterA {
       paramCallbacks = params[name];
       paramCalled = called[name];
 
-      if (paramVal === undefined || !paramCallbacks) {
+      if (paramVal === void 0 || !paramCallbacks) {
         return param();
       }
 
@@ -451,10 +440,9 @@ export class RouterA {
     const len = callbacks.length;
     for (let i = 0; i < len; ++i) {
       const fn = callbacks[i];
-      if (typeof fn !== 'function') {
+      if (typeof fn !== 'function' && fn instanceof Router === false) {
         throw new TypeError('Router.use() requires a middleware function but got a ' + gettype(fn))
       }
-
       // add the middleware
       debug('use %o %s', path, fn.name || '<anonymous>')
 
@@ -464,7 +452,7 @@ export class RouterA {
         end: false
       }, fn);
 
-      layer.route = undefined;
+      layer.route = void 0;
 
       this.stack.push(layer);
     }
@@ -503,7 +491,7 @@ export class RouterA {
 
 // create Router#VERB functions
 methods.concat('all').forEach(function(method){
-  RouterA.prototype[method] = function(path){
+  Router.prototype[method] = function(path){
     const route = this.route(path)
     route[method].apply(route, slice.call(arguments, 1));
     return this;

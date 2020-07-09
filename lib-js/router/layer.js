@@ -51,29 +51,33 @@ export class Layer {
     debug('new %o', path)
   }
 
-  /**
-   * Handle the error for the layer.
-   *
-   * @param {Error} error
-   * @param {Request} req
-   * @param {Response} res
-   * @param {function} next
-   * @api private
-   */
-
   handle_error(error, req, res, next) {
-    const fn = this.handle;
+    let fn;
+    if (typeof this.handle === 'function') {
+      fn = this.handle;
+      if (fn.length !== 4) {
+        // not a standard error handler
+        return next(error);
+      }
 
-    if (fn.length !== 4) {
-      // not a standard error handler
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return next(error);
+      try {
+        fn(error, req, res, next);
+      } catch (err) {
+        next(err);
+      }
     }
+    else {
+      fn = this.handle.handle;
+      if (fn.length !== 4) {
+        // not a standard error handler
+        return next(error);
+      }
 
-    try {
-      fn(error, req, res, next);
-    } catch (err) {
-      next(err);
+      try {
+        this.handle.handle(error, req, res, next);
+      } catch (err) {
+        next(err);
+      }
     }
   }
 
@@ -86,16 +90,33 @@ export class Layer {
    * @api private
    */
   handle_request(req, res, next) {
-    const fn = this.handle;
-    if (fn.length > 3) {
-      // not a standard request handler
-      return next();
-    }
+    let fn;
+    if (typeof this.handle === 'function') {
+      fn = this.handle;
+      if (this.handle.length > 3) {
+        // not a standard request handler
+        return next();
+      }
 
-    try {
-      fn(req, res, next);
-    } catch (err) {
-      next(err);
+      try {
+        fn(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    }
+    else {
+      fn = this.handle.handle;
+
+      if (fn.length > 3) {
+        // not a standard request handler
+        return next();
+      }
+
+      try {
+        this.handle.handle(req, res, next);
+      } catch (err) {
+        next(err);
+      }
     }
   }
 

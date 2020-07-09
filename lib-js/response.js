@@ -385,7 +385,6 @@ export class res extends http.ServerResponse {
     const next = req.next;
     let opts = options || {};
 
-    console.log('here')
     if (!path) {
       throw new TypeError('path argument is required to res.sendFile');
     }

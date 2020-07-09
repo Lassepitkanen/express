@@ -27,10 +27,10 @@ export function query(options) {
 
   if (typeof options === 'function') {
     queryparse = options;
-    opts = undefined;
+    opts = void 0;
   }
 
-  if (opts !== undefined && opts.allowPrototypes === undefined) {
+  if (opts !== void 0 && opts.allowPrototypes === void 0) {
     // back-compat for qs module
     opts.allowPrototypes = true;
   }

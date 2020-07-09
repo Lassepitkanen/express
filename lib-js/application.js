@@ -16,7 +16,6 @@
 
 import finalhandler from './deps/finalhandler/index.js';
 import { Router } from './router/index.js';
-// var Router = require('./router/index.js');
 import { methods } from './deps/methods/index.js';
 import * as middleware  from './middleware/init.js';
 import { query } from './middleware/query.js';
@@ -189,7 +188,7 @@ export class App extends EventEmitter {
     // default path to '/'
     // disambiguate app.use([fn])
 
-    if (typeof fn !== 'function') {
+    if (typeof fn !== 'function' && fn instanceof Router === false) {
       let arg = fn;
 
       while (Array.isArray(arg) && arg.length !== 0) {
@@ -212,8 +211,6 @@ export class App extends EventEmitter {
     // });
 
     const fns = flatten(slice.call(arguments, offset));
-
-
     if (fns.length === 0) {
       throw new TypeError('app.use() requires a middleware function')
     }

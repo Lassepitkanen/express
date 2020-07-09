@@ -8,4 +8,4 @@
 
 'use strict';
 
-module.exports = require('./lib-js/express');
+module.exports = require('./lib/express');
