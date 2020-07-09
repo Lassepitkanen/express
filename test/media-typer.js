@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { format, parse } from 'media-typer';
+import { format, parse } from '../lib/deps/media-typer/index.js';
 
 const invalidTypes = [
   ' ',

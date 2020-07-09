@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Buffer } from 'safe-buffer';
+import { Buffer } from 'buffer';
 import * as fs from 'fs';
 import seedrandom from 'seedrandom';
 import { etag } from '../lib/deps/etag/index.js';
