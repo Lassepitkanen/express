@@ -20,7 +20,7 @@ import { Router } from './router/index.js';
 import { methods } from './deps/methods/index.js';
 import * as middleware  from './middleware/init.js';
 import { query } from './middleware/query.js';
-import dbg from 'debug';
+import dbg from './deps/debug/index.js';
 const debug = dbg('express:application');
 import { View } from './view.js';
 import * as http from 'http';

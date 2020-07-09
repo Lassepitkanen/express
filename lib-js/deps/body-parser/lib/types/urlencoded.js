@@ -15,11 +15,10 @@
 import { parse as bytesParse } from '../../../bytes/index.js';
 import { parse } from '../../../content-type/index.js';
 import { createError } from '../../../http-errors/index.js';
-import dbg from 'debug';
+import dbg from '../../../debug/index.js';
 const debug = dbg('body-parser');
 import read from '../read.js';
 import { typeis, hasBody } from '../../../type-is/index.js';
-const deprecate = require('depd')('body-parser');
 
 
 /**
@@ -36,11 +35,6 @@ const parsers = {};
  */
 export default function urlencoded (options) {
   const opts = options || {}
-
-  // notice because option default will flip in next major
-  if (opts.extended === void 0) {
-    deprecate('undefined extended: provide extended option')
-  }
 
   const extended = opts.extended !== false;
   const inflate = opts.inflate !== false;

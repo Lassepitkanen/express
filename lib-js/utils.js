@@ -14,7 +14,6 @@
 
 
 import { contentDisposition as ContentDisposition } from './deps/content-disposition/index.js';
-const deprecate = require('depd')('express');
 import { etag as Etag } from './deps/etag/index.js';
 import { flatten as Flatten } from './deps/array-flatten/index.js';
 import { Buffer } from 'buffer';
@@ -65,8 +64,7 @@ export function isAbsolute(path){
  * @return {Array}
  * @api private
  */
-export const flatten = deprecate.function(Flatten,
-  'utils.flatten: use array-flatten npm module instead');
+export const flatten = Flatten;
 
 /**
  * Normalize the given `type`, for example "html" becomes "text/html".
@@ -105,8 +103,7 @@ export function normalizeTypes(types){
  * @return {String}
  * @api private
  */
-export const contentDisposition = deprecate.function(ContentDisposition,
-  'utils.contentDisposition: use content-disposition npm module instead');
+export const contentDisposition = ContentDisposition;
 
 /**
  * Parse accept params `str` returning an

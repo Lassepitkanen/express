@@ -16,9 +16,8 @@
 import { Route } from './route.js';
 import { Layer } from './layer.js';
 import { methods } from '../deps/methods/index.js';
-import dbg from 'debug';
+import dbg from '../deps/debug/index.js';
 const debug = dbg('express:router');
-const deprecate = require('depd')('express');
 import { flatten } from '../deps/array-flatten/index.js';
 import { parseUrl } from '../deps/parseurl/index.js';
 
@@ -99,7 +98,6 @@ export class RouterA {
   param(name, fn) {
     // param logic
     if (typeof name === 'function') {
-      deprecate('router.param(fn): Refactor to use path params');
       this._params.push(name);
       return;
     }
@@ -110,7 +108,6 @@ export class RouterA {
     let ret;
 
     if (name[0] === ':') {
-      deprecate('router.param(' + JSON.stringify(name) + ', fn): Use router.param(' + JSON.stringify(name.substr(1)) + ', fn) instead');
       name = name.substr(1);
     }
 

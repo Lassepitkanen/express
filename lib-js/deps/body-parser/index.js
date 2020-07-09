@@ -10,8 +10,6 @@
  * Module dependencies.
  * @private
  */
-
-const deprecate = require('depd')('body-parser');
 import json from './lib/types/json.js';
 import raw from './lib/types/raw.js';
 import text from './lib/types/text.js';

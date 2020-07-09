@@ -11,7 +11,7 @@
  */
 
 import { parse as bytesParse } from '../../../bytes/index.js';
-import dbg from 'debug';
+import dbg from '../../../debug/index.js';
 const debug = dbg('body-parser:raw');
 import read from '../read.js';
 import { typeis, hasBody } from '../../../type-is/index.js';

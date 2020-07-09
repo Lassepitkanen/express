@@ -12,7 +12,7 @@
  * Module dependencies.
  * @private
  */
-import dbg from 'debug';
+import dbg from '../deps/debug/index.js';
 const debug = dbg('express:router:route');
 import { flatten } from '../deps/array-flatten/index.js';
 import { Layer } from './layer.js';

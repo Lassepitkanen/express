@@ -15,7 +15,7 @@
 
 
 import { pathtoRegexp } from '../deps/path-to-regexp/index.js';
-import dbg from 'debug';
+import dbg from '../deps/debug/index.js';
 const debug = dbg('express:router:layer');
 
 /**

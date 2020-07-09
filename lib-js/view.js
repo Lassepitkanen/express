@@ -16,7 +16,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import dbg from 'debug';
+import dbg from './deps/debug/index.js';
 const debug = dbg('express:view');
 
 /**

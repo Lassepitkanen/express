@@ -13,7 +13,6 @@
  */
 import { Buffer } from 'buffer';
 import { contentDisposition } from './deps/content-disposition/index.js';
-const deprecate = require('depd')('express');
 import encodeUrl from './deps/encodeurl/index.js';
 import { escapeHtml } from './deps/escape-html/index.js';
 import * as http from 'http';
@@ -107,10 +106,8 @@ export class res extends http.ServerResponse {
     if (arguments.length === 2) {
       // res.send(body, status) backwards compat
       if (typeof arguments[0] !== 'number' && typeof arguments[1] === 'number') {
-        deprecate('res.send(body, status): Use res.status(status).send(body) instead');
         this.statusCode = arguments[1];
       } else {
-        deprecate('res.send(status, body): Use res.status(status).send(body) instead');
         this.statusCode = arguments[0];
         chunk = arguments[1];
       }
@@ -123,7 +120,6 @@ export class res extends http.ServerResponse {
         this.type('txt');
       }
 
-      deprecate('res.send(status): Use res.sendStatus(status) instead');
       this.statusCode = chunk;
       chunk = statuses.message[chunk];
     }
@@ -232,10 +228,8 @@ export class res extends http.ServerResponse {
     if (arguments.length === 2) {
       // res.json(body, status) backwards compat
       if (typeof arguments[1] === 'number') {
-        deprecate('res.json(obj, status): Use res.status(status).json(obj) instead');
         this.statusCode = arguments[1];
       } else {
-        deprecate('res.json(status, obj): Use res.status(status).json(obj) instead');
         this.statusCode = arguments[0];
         val = arguments[1];
       }
@@ -274,10 +268,8 @@ export class res extends http.ServerResponse {
     if (arguments.length === 2) {
       // res.json(body, status) backwards compat
       if (typeof arguments[1] === 'number') {
-        deprecate('res.jsonp(obj, status): Use res.status(status).json(obj) instead');
         this.statusCode = arguments[1];
       } else {
-        deprecate('res.jsonp(status, obj): Use res.status(status).jsonp(obj) instead');
         this.statusCode = arguments[0];
         val = arguments[1];
       }
@@ -393,6 +385,7 @@ export class res extends http.ServerResponse {
     const next = req.next;
     let opts = options || {};
 
+    console.log('here')
     if (!path) {
       throw new TypeError('path argument is required to res.sendFile');
     }
@@ -400,7 +393,6 @@ export class res extends http.ServerResponse {
     if (typeof path !== 'string') {
       throw new TypeError('path must be a string to res.sendFile')
     }
-
     // support function as second arg
     if (typeof options === 'function') {
       done = options;
@@ -427,6 +419,33 @@ export class res extends http.ServerResponse {
     });
   }
 
+  sendfile = function (path, options, callback) {
+    let done = callback;
+    const req = this.req;
+    const res = this;
+    const next = req.next;
+    let opts = options || {};
+
+    // support function as second arg
+    if (typeof options === 'function') {
+      done = options;
+      opts = {};
+    }
+
+    // create file stream
+    const file = send(req, path, opts);
+
+    // transfer
+    sendfile(res, file, opts, function (err) {
+      if (done) return done(err);
+      if (err && err.code === 'EISDIR') return next();
+
+      // next() all but write errors
+      if (err && err.code !== 'ECONNABORTED' && err.syscall !== 'write') {
+        next(err);
+      }
+    });
+  };
   /**
    * Transfer the file at the given `path` as an attachment.
    *
@@ -854,7 +873,6 @@ export class res extends http.ServerResponse {
         status = arguments[0];
         address = arguments[1];
       } else {
-        deprecate('res.redirect(url, status): Use res.redirect(status, url) instead');
         status = arguments[1];
       }
     }
@@ -900,7 +918,6 @@ export class res extends http.ServerResponse {
   vary(field){
     // checks for back-compat
     if (!field || (Array.isArray(field) && !field.length)) {
-      deprecate('res.vary(): Provide a field name');
       return this;
     }
 

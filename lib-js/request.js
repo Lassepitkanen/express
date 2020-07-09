@@ -13,7 +13,6 @@
  * @private
  */
 import { Accepts } from './deps/accepts/index.js';
-const deprecate = require('depd')('express');
 import { isIP, Socket } from 'net';
 import { typeofrequest } from './deps/type-is/index.js';
 import * as http from 'http';
@@ -155,6 +154,8 @@ export class req extends http.IncomingMessage {
     return accept.encodings.apply(accept, arguments);
   }
 
+  acceptsEncoding = this.acceptsEncodings;
+
 
   /**
    * Check if the given `charset`s are acceptable,
@@ -168,6 +169,7 @@ export class req extends http.IncomingMessage {
     const accept = new Accepts(this);
     return accept.charsets.apply(accept, arguments);
   }
+  acceptsCharset = this.acceptsCharsets;
 
 
   /**
@@ -182,6 +184,7 @@ export class req extends http.IncomingMessage {
     const accept = new Accepts(this);
     return accept.languages.apply(accept, arguments);
   }
+  acceptsLanguage = this.acceptsLanguages;
 
 
   /**
@@ -238,7 +241,6 @@ export class req extends http.IncomingMessage {
     const args = arguments.length === 1
       ? 'name'
       : 'name, default';
-    deprecate('req.param(' + args + '): Use req.params, req.body, or req.query instead');
 
     if (null != params[name] && params.hasOwnProperty(name)) return params[name];
     if (null != body[name]) return body[name];

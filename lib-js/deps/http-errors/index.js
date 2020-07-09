@@ -12,7 +12,6 @@
  * @private
  */
 
-const deprecate = require('depd')('http-errors')
 import * as statuses from '../statuses/index.js';
 import { inherits } from 'util';
 import toIdentifier from '../toidentifier/index.js';
@@ -22,13 +21,11 @@ import toIdentifier from '../toidentifier/index.js';
  * Module exports.
  * @public
  */
-
-
-export const HttpError = createHttpErrorConstructor()
-export const isHttpError = createIsHttpErrorFunction(HttpError)
+export const HttpError = createHttpErrorConstructor();
+export const isHttpError = createIsHttpErrorFunction(HttpError);
 
 // Populate exports for all constructors
-populateConstructorExports(createError, statuses.codes, HttpError)
+populateConstructorExports(createError, statuses.codes, HttpError);
 
 /**
  * Get the code class of a status code.
@@ -36,7 +33,7 @@ populateConstructorExports(createError, statuses.codes, HttpError)
  */
 
 function codeClass (status) {
-  return Number(String(status).charAt(0) + '00')
+  return Number(String(status).charAt(0) + '00');
 }
 
 /**
@@ -65,9 +62,6 @@ export function createError () {
         break
       case 'number':
         status = arg;
-        if (i !== 0) {
-          deprecate('non-first-argument status code; replace with createError(' + arg + ', ...)');
-        }
         break
       case 'object':
         props = arg;
@@ -75,9 +69,6 @@ export function createError () {
     }
   }
 
-  if (typeof status === 'number' && (status < 400 || status >= 600)) {
-    deprecate('non-error status code; use only 4xx or 5xx status codes');
-  }
 
   if (typeof status !== 'number' ||
     (!statuses.message[status] && (status < 400 || status >= 600))) {
@@ -262,7 +253,7 @@ function nameFunc (func, name) {
  */
 
 function populateConstructorExports (exports, codes, HttpError) {
-  codes.forEach(function forEachCode (code) {
+  codes.forEach((code) => {
     let CodeError;
     const name = toIdentifier(statuses.message[code]);
 
@@ -281,10 +272,8 @@ function populateConstructorExports (exports, codes, HttpError) {
       exports[name] = CodeError;
     }
   })
-
   // backwards-compatibility
-  exports["I'mateapot"] = deprecate.function(exports.ImATeapot,
-    '"I\'mateapot"; use "ImATeapot" instead');
+  exports["I'mateapot"] = exports.ImATeapot;
 }
 
 /**

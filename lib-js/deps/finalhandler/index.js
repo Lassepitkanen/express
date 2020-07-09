@@ -11,7 +11,7 @@
  * @private
  */
 
-import dbg from 'debug';
+import dbg from '../debug/index.js';
 const debug = dbg('finalhandler');
 import encodeUrl from '../encodeurl/index.js';
 import { escapeHtml } from '../escape-html/index.js';
