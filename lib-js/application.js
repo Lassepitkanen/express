@@ -27,8 +27,8 @@ import { compileETag, compileQueryParser, compileTrust } from './utils.js';
 import { flatten } from './deps/array-flatten/index.js';
 import { resolve } from 'path';
 import { EventEmitter } from 'events';
-import { req } from './request.js';
-import { res } from './response.js';
+import { Req } from './request.js';
+import { Res } from './response.js';
 const slice = Array.prototype.slice;
 
 
@@ -54,12 +54,12 @@ export class App extends EventEmitter {
   }
 
   init() {
-    this.request = Object.create(new req(), {
+    this.request = Object.create(new Req(), {
       app: { configurable: true, enumerable: true, writable: true, value: this }
     })
 
     // expose the prototype that will get set on responses
-    this.response = Object.create(new res(), {
+    this.response = Object.create(new Res(), {
       app: { configurable: true, enumerable: true, writable: true, value: this }
     })
 

@@ -42,7 +42,7 @@ const charsetRegExp = /;\s*charset\s*=/;
 // module.exports = res
 
 
-export class res extends http.ServerResponse {
+export class Res extends http.ServerResponse {
   constructor() {
     super(new http.IncomingMessage());
   }
@@ -687,7 +687,7 @@ export class res extends http.ServerResponse {
    */
   set(field, val) {
     if (arguments.length === 2) {
-      var value = Array.isArray(val)
+      let value = Array.isArray(val)
         ? val.map(String)
         : String(val);
 
@@ -697,14 +697,14 @@ export class res extends http.ServerResponse {
           throw new TypeError('Content-Type cannot be set to an Array');
         }
         if (!charsetRegExp.test(value)) {
-          var charset = mime.charsets.lookup(value.split(';')[0]);
+          const charset = mime.charsets.lookup(value.split(';')[0]);
           if (charset) value += '; charset=' + charset.toLowerCase();
         }
       }
 
       this.setHeader(field, value);
     } else {
-      for (var key in field) {
+      for (const key in field) {
         this.set(key, field[key]);
       }
     }
@@ -712,7 +712,7 @@ export class res extends http.ServerResponse {
   }
   header(field, val) {
     if (arguments.length === 2) {
-      var value = Array.isArray(val)
+      const value = Array.isArray(val)
         ? val.map(String)
         : String(val);
 
@@ -722,14 +722,14 @@ export class res extends http.ServerResponse {
           throw new TypeError('Content-Type cannot be set to an Array');
         }
         if (!charsetRegExp.test(value)) {
-          var charset = mime.charsets.lookup(value.split(';')[0]);
+          const charset = mime.charsets.lookup(value.split(';')[0]);
           if (charset) value += '; charset=' + charset.toLowerCase();
         }
       }
 
       this.setHeader(field, value);
     } else {
-      for (var key in field) {
+      for (const key in field) {
         this.set(key, field[key]);
       }
     }
@@ -793,7 +793,7 @@ export class res extends http.ServerResponse {
       throw new Error('cookieParser("secret") required for signed cookies');
     }
 
-    var val = typeof value === 'object'
+    let val = typeof value === 'object'
       ? 'j:' + JSON.stringify(value)
       : String(value);
 
@@ -886,7 +886,7 @@ export class res extends http.ServerResponse {
       },
 
       html: function(){
-        var u = escapeHtml(address);
+        const u = escapeHtml(address);
         body = '<p>' + statuses.message[status] + '. Redirecting to <a href="' + u + '">' + u + '</a></p>'
       },
 

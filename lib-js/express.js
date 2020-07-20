@@ -15,8 +15,8 @@ import bodyParser from './deps/body-parser/index.js';
 import { App } from './application.js';
 import { Route as route } from './router/route.js';
 import { Router as router } from './router/index.js';
-import { req } from './request.js';
-import { res } from './response.js';
+import { Req } from './request.js';
+import { Res } from './response.js';
 import { query } from './middleware/query.js';
 import serveStatic from './deps/serve-static/index.js';
 
@@ -49,8 +49,8 @@ function createApplication() {
  * Expose the prototypes.
  */
 export const application = App;
-export const request = req;
-export const response = res;
+export const request = Req;
+export const response = Res;
 
 /**
  * Expose constructors.
@@ -62,14 +62,11 @@ export const Router = router;
  * Expose middleware
  */
 export const json = bodyParser.json;
-exports.query = query;
-export const raw = bodyParser.raw
-// exports.static = serveStatic;
-
-exports.static = serveStatic;
+export const query = query;
+export const raw = bodyParser.raw;
+export const static = serveStatic;
 export const text = bodyParser.text;
 export const urlencoded = bodyParser.urlencoded;
-
 
 
 /**

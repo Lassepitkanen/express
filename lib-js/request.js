@@ -23,7 +23,7 @@ import { proxyaddr, alladdrs } from './deps/proxy-addr/index.js';
 
 
 
-export class req extends http.IncomingMessage {
+export class Req extends http.IncomingMessage {
   constructor() {
     super(new Socket);
   }
