@@ -71,12 +71,12 @@ function parseEncoding(str, i) {
   const match = simpleEncodingRegExp.exec(str);
   if (!match) return null;
 
-  var encoding = match[1];
-  var q = 1;
+  const encoding = match[1];
+  let q = 1;
   if (match[2]) {
-    var params = match[2].split(';');
-    for (var j = 0; j < params.length; j++) {
-      var p = params[j].trim().split('=');
+    const params = match[2].split(';');
+    for (let j = 0; j < params.length; ++j) {
+      const p = params[j].trim().split('=');
       if (p[0] === 'q') {
         q = parseFloat(p[1]);
         break;
@@ -97,10 +97,10 @@ function parseEncoding(str, i) {
  */
 
 function getEncodingPriority(encoding, accepted, index) {
-  var priority = {o: -1, q: 0, s: 0};
+  let priority = {o: -1, q: 0, s: 0};
 
-  for (var i = 0; i < accepted.length; i++) {
-    var spec = specify(encoding, accepted[i], index);
+  for (let i = 0; i < accepted.length; ++i) {
+    const spec = specify(encoding, accepted[i], index);
 
     if (spec && (priority.s - spec.s || priority.q - spec.q || priority.o - spec.o) < 0) {
       priority = spec;

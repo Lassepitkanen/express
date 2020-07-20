@@ -80,7 +80,7 @@ iconv.getCodec = function getCodec(encoding) {
         break;
 
       case "object": // Alias with options. Can be layered.
-        for (var key in codecDef)
+        for (const key in codecDef)
           codecOptions[key] = codecDef[key];
 
         if (!codecOptions.encodingName)

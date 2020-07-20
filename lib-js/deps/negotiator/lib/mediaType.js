@@ -102,7 +102,7 @@ function getMediaTypePriority(type, accepted, index) {
 
   const len = accepted.length;
   for (let i = 0; i < len; ++i) {
-    var spec = specify(type, accepted[i], index);
+    const spec = specify(type, accepted[i], index);
 
     if (spec && (priority.s - spec.s || priority.q - spec.q || priority.o - spec.o) < 0) {
       priority = spec;

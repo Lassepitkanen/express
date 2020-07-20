@@ -1,13 +1,12 @@
-var path = require('path');
-var fs = require('fs');
+import * as fs from 'fs';
 import types from './types.js';
 
 function Mime() {
   // Map of extension -> mime type
-  this.types = Object.create(null);
+  this.types = {};
 
   // Map of mime type -> extension
-  this.extensions = Object.create(null);
+  this.extensions = {};
 }
 
 /**
@@ -20,9 +19,10 @@ function Mime() {
  * @param map (Object) type definitions
  */
 Mime.prototype.define = function (map) {
-  for (var type in map) {
-    var exts = map[type];
-    for (var i = 0; i < exts.length; i++) {
+  for (const type in map) {
+    const exts = map[type];
+    const len = exts.length;
+    for (let i = 0; i < len; ++i) {
       if (process.env.DEBUG_MIME && this.types[exts[i]]) {
         console.warn((this._loading || "define()").replace(/.*\//, ''), 'changes "' + exts[i] + '" extension type from ' +
           this.types[exts[i]] + ' to ' + type);
@@ -49,13 +49,13 @@ Mime.prototype.define = function (map) {
 Mime.prototype.load = function(file) {
   this._loading = file;
   // Read file and split into lines
-  var map = {},
-      content = fs.readFileSync(file, 'ascii'),
-      lines = content.split(/[\r\n]+/);
+  const map = {},
+    content = fs.readFileSync(file, 'ascii'),
+    lines = content.split(/[\r\n]+/);
 
   lines.forEach(function(line) {
     // Clean up whitespace/comments, and split into fields
-    var fields = line.replace(/\s*#.*|^\s*|\s*$/g, '').split(/\s+/);
+    const fields = line.replace(/\s*#.*|^\s*|\s*$/g, '').split(/\s+/);
     map[fields.shift()] = fields;
   });
 
@@ -68,7 +68,7 @@ Mime.prototype.load = function(file) {
  * Lookup a mime type based on extension
  */
 Mime.prototype.lookup = function(path, fallback) {
-  var ext = path.replace(/^.*[\.\/\\]/, '').toLowerCase();
+  const ext = path.replace(/^.*[\.\/\\]/, '').toLowerCase();
 
   return this.types[ext] || fallback || this.default_type;
 };
@@ -77,7 +77,7 @@ Mime.prototype.lookup = function(path, fallback) {
  * Return file extension associated with a mime type
  */
 Mime.prototype.extension = function(mimeType) {
-  var type = mimeType.match(/^\s*([^;\s]*)(?:;|\s|$)/)[1].toLowerCase();
+  const type = mimeType.match(/^\s*([^;\s]*)(?:;|\s|$)/)[1].toLowerCase();
   return this.extensions[type];
 };
 

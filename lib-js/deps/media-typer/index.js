@@ -28,8 +28,8 @@
  * OCTET         = <any 8-bit sequence of data>
  */
 const paramRegExp = /; *([!#$%&'\*\+\-\.0-9A-Z\^_`a-z\|~]+) *= *("(?:[ !\u0023-\u005b\u005d-\u007e\u0080-\u00ff]|\\[\u0020-\u007e])*"|[!#$%&'\*\+\-\.0-9A-Z\^_`a-z\|~]+) */g;
-const textRegExp = /^[\u0020-\u007e\u0080-\u00ff]+$/
-const tokenRegExp = /^[!#$%&'\*\+\-\.0-9A-Z\^_`a-z\|~]+$/
+const textRegExp = /^[\u0020-\u007e\u0080-\u00ff]+$/;
+const tokenRegExp = /^[!#$%&'\*\+\-\.0-9A-Z\^_`a-z\|~]+$/;
 
 /**
  * RegExp to match quoted-pair in RFC 2616
@@ -75,51 +75,51 @@ const typeRegExp = /^ *([A-Za-z0-9][A-Za-z0-9!#$&^_-]{0,126})\/([A-Za-z0-9][A-Za
 
 export function format(obj) {
   if (!obj || typeof obj !== 'object') {
-    throw new TypeError('argument obj is required')
+    throw new TypeError('argument obj is required');
   }
 
-  var parameters = obj.parameters
-  var subtype = obj.subtype
-  var suffix = obj.suffix
-  var type = obj.type
+  const parameters = obj.parameters;
+  const subtype = obj.subtype;
+  const suffix = obj.suffix;
+  const type = obj.type;
 
   if (!type || !typeNameRegExp.test(type)) {
-    throw new TypeError('invalid type')
+    throw new TypeError('invalid type');
   }
 
   if (!subtype || !subtypeNameRegExp.test(subtype)) {
-    throw new TypeError('invalid subtype')
+    throw new TypeError('invalid subtype');
   }
 
   // format as type/subtype
-  var string = type + '/' + subtype
+  let string = type + '/' + subtype;
 
   // append +suffix
   if (suffix) {
     if (!typeNameRegExp.test(suffix)) {
-      throw new TypeError('invalid suffix')
+      throw new TypeError('invalid suffix');
     }
 
-    string += '+' + suffix
+    string += '+' + suffix;
   }
 
   // append parameters
   if (parameters && typeof parameters === 'object') {
-    var param
-    var params = Object.keys(parameters).sort()
-
-    for (var i = 0; i < params.length; i++) {
+    let param
+    const params = Object.keys(parameters).sort()
+    const len = params.length;
+    for (let i = 0; i < len; ++i) {
       param = params[i]
 
       if (!tokenRegExp.test(param)) {
-        throw new TypeError('invalid parameter name')
+        throw new TypeError('invalid parameter name');
       }
 
-      string += '; ' + param + '=' + qstring(parameters[param])
+      string += '; ' + param + '=' + qstring(parameters[param]);
     }
   }
 
-  return string
+  return string;
 }
 
 /**
@@ -132,57 +132,57 @@ export function format(obj) {
 
 export function parse(string) {
   if (!string) {
-    throw new TypeError('argument string is required')
+    throw new TypeError('argument string is required');
   }
 
   // support req/res-like objects as argument
   if (typeof string === 'object') {
-    string = getcontenttype(string)
+    string = getcontenttype(string);
   }
 
   if (typeof string !== 'string') {
-    throw new TypeError('argument string is required to be a string')
+    throw new TypeError('argument string is required to be a string');
   }
 
-  var index = string.indexOf(';')
-  var type = index !== -1
+  let index = string.indexOf(';')
+  const type = index !== -1
     ? string.substr(0, index)
-    : string
+    : string;
 
-  var key
-  var match
-  var obj = splitType(type)
-  var params = {}
-  var value
+  let key;
+  let match;
+  const obj = splitType(type);
+  let params = {};
+  let value;
 
-  paramRegExp.lastIndex = index
+  paramRegExp.lastIndex = index;
 
   while (match = paramRegExp.exec(string)) {
     if (match.index !== index) {
-      throw new TypeError('invalid parameter format')
+      throw new TypeError('invalid parameter format');
     }
 
-    index += match[0].length
-    key = match[1].toLowerCase()
-    value = match[2]
+    index += match[0].length;
+    key = match[1].toLowerCase();
+    value = match[2];
 
     if (value[0] === '"') {
       // remove quotes and escapes
       value = value
         .substr(1, value.length - 2)
-        .replace(qescRegExp, '$1')
+        .replace(qescRegExp, '$1');
     }
 
-    params[key] = value
+    params[key] = value;
   }
 
   if (index !== -1 && index !== string.length) {
-    throw new TypeError('invalid parameter format')
+    throw new TypeError('invalid parameter format');
   }
 
-  obj.parameters = params
+  obj.parameters = params;
 
-  return obj
+  return obj;
 }
 
 /**
@@ -196,12 +196,12 @@ export function parse(string) {
 function getcontenttype(obj) {
   if (typeof obj.getHeader === 'function') {
     // res-like
-    return obj.getHeader('content-type')
+    return obj.getHeader('content-type');
   }
 
   if (typeof obj.headers === 'object') {
     // req-like
-    return obj.headers && obj.headers['content-type']
+    return obj.headers && obj.headers['content-type'];
   }
 }
 
@@ -214,18 +214,18 @@ function getcontenttype(obj) {
  */
 
 function qstring(val) {
-  var str = String(val)
+  const str = String(val);
 
   // no need to quote tokens
   if (tokenRegExp.test(str)) {
-    return str
+    return str;
   }
 
   if (str.length > 0 && !textRegExp.test(str)) {
-    throw new TypeError('invalid parameter value')
+    throw new TypeError('invalid parameter value');
   }
 
-  return '"' + str.replace(quoteRegExp, '\\$1') + '"'
+  return '"' + str.replace(quoteRegExp, '\\$1') + '"';
 }
 
 /**
@@ -237,28 +237,28 @@ function qstring(val) {
  */
 
 function splitType(string) {
-  var match = typeRegExp.exec(string.toLowerCase())
+  const match = typeRegExp.exec(string.toLowerCase());
 
   if (!match) {
-    throw new TypeError('invalid media type')
+    throw new TypeError('invalid media type');
   }
 
-  var type = match[1]
-  var subtype = match[2]
-  var suffix
+  const type = match[1];
+  let subtype = match[2];
+  let suffix;
 
   // suffix after last +
-  var index = subtype.lastIndexOf('+')
+  const index = subtype.lastIndexOf('+');
   if (index !== -1) {
-    suffix = subtype.substr(index + 1)
-    subtype = subtype.substr(0, index)
+    suffix = subtype.substr(index + 1);
+    subtype = subtype.substr(0, index);
   }
 
-  var obj = {
+  const obj = {
     type: type,
     subtype: subtype,
     suffix: suffix
-  }
+  };
 
-  return obj
+  return obj;
 }

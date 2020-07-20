@@ -20,9 +20,9 @@
  * obs-text      = %x80-FF
  * quoted-pair   = "\" ( HTAB / SP / VCHAR / obs-text )
  */
-var PARAM_REGEXP = /; *([!#$%&'*+.^_`|~0-9A-Za-z-]+) *= *("(?:[\u000b\u0020\u0021\u0023-\u005b\u005d-\u007e\u0080-\u00ff]|\\[\u000b\u0020-\u00ff])*"|[!#$%&'*+.^_`|~0-9A-Za-z-]+) */g
-var TEXT_REGEXP = /^[\u000b\u0020-\u007e\u0080-\u00ff]+$/
-var TOKEN_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/
+const PARAM_REGEXP = /; *([!#$%&'*+.^_`|~0-9A-Za-z-]+) *= *("(?:[\u000b\u0020\u0021\u0023-\u005b\u005d-\u007e\u0080-\u00ff]|\\[\u000b\u0020-\u00ff])*"|[!#$%&'*+.^_`|~0-9A-Za-z-]+) */g;
+const TEXT_REGEXP = /^[\u000b\u0020-\u007e\u0080-\u00ff]+$/;
+const TOKEN_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
 
 /**
  * RegExp to match quoted-pair in RFC 7230 sec 3.2.6
@@ -30,12 +30,12 @@ var TOKEN_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/
  * quoted-pair = "\" ( HTAB / SP / VCHAR / obs-text )
  * obs-text    = %x80-FF
  */
-var QESC_REGEXP = /\\([\u000b\u0020-\u00ff])/g
+const QESC_REGEXP = /\\([\u000b\u0020-\u00ff])/g;
 
 /**
  * RegExp to match chars that must be quoted-pair in RFC 7230 sec 3.2.6
  */
-var QUOTE_REGEXP = /([\\"])/g
+const QUOTE_REGEXP = /([\\"])/g;
 
 /**
  * RegExp to match type in RFC 7231 sec 3.1.1.1
@@ -44,7 +44,7 @@ var QUOTE_REGEXP = /([\\"])/g
  * type       = token
  * subtype    = token
  */
-var TYPE_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/
+const TYPE_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
 
 /**
  * Module exports.
@@ -62,35 +62,36 @@ var TYPE_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/
 
 export function format(obj) {
   if (!obj || typeof obj !== 'object') {
-    throw new TypeError('argument obj is required')
+    throw new TypeError('argument obj is required');
   }
 
-  var parameters = obj.parameters
-  var type = obj.type
+  const parameters = obj.parameters;
+  const type = obj.type;
 
   if (!type || !TYPE_REGEXP.test(type)) {
-    throw new TypeError('invalid type')
+    throw new TypeError('invalid type');
   }
 
-  var string = type
+  let string = type;
 
   // append parameters
   if (parameters && typeof parameters === 'object') {
-    var param
-    var params = Object.keys(parameters).sort()
+    let param;
+    const params = Object.keys(parameters).sort();
 
-    for (var i = 0; i < params.length; i++) {
-      param = params[i]
+    const len = params.length;
+    for (let i = 0; i < len; ++i) {
+      param = params[i];
 
       if (!TOKEN_REGEXP.test(param)) {
-        throw new TypeError('invalid parameter name')
+        throw new TypeError('invalid parameter name');
       }
 
-      string += '; ' + param + '=' + qstring(parameters[param])
+      string += '; ' + param + '=' + qstring(parameters[param]);
     }
   }
 
-  return string
+  return string;
 }
 
 /**
@@ -103,62 +104,61 @@ export function format(obj) {
 
 export function parse(string) {
   if (!string) {
-    throw new TypeError('argument string is required')
+    throw new TypeError('argument string is required');
   }
 
   // support req/res-like objects as argument
-  var header = typeof string === 'object'
+  const header = typeof string === 'object'
     ? getcontenttype(string)
-    : string
+    : string;
 
   if (typeof header !== 'string') {
-    throw new TypeError('argument string is required to be a string')
+    throw new TypeError('argument string is required to be a string');
   }
 
-  var index = header.indexOf(';')
-  var type = index !== -1
+  let index = header.indexOf(';');
+  const type = index !== -1
     ? header.substr(0, index).trim()
-    : header.trim()
+    : header.trim();
 
   if (!TYPE_REGEXP.test(type)) {
-    throw new TypeError('invalid media type')
+    throw new TypeError('invalid media type');
   }
 
-  var obj = new ContentType(type.toLowerCase())
+  const obj = new ContentType(type.toLowerCase());
 
   // parse parameters
   if (index !== -1) {
-    var key
-    var match
-    var value
+    let key, match, value;
 
-    PARAM_REGEXP.lastIndex = index
+
+    PARAM_REGEXP.lastIndex = index;
 
     while ((match = PARAM_REGEXP.exec(header))) {
       if (match.index !== index) {
-        throw new TypeError('invalid parameter format')
+        throw new TypeError('invalid parameter format');
       }
 
-      index += match[0].length
-      key = match[1].toLowerCase()
-      value = match[2]
+      index += match[0].length;
+      key = match[1].toLowerCase();
+      value = match[2];
 
       if (value[0] === '"') {
         // remove quotes and escapes
         value = value
           .substr(1, value.length - 2)
-          .replace(QESC_REGEXP, '$1')
+          .replace(QESC_REGEXP, '$1');
       }
 
-      obj.parameters[key] = value
+      obj.parameters[key] = value;
     }
 
     if (index !== header.length) {
-      throw new TypeError('invalid parameter format')
+      throw new TypeError('invalid parameter format');
     }
   }
 
-  return obj
+  return obj;
 }
 
 /**
@@ -170,21 +170,21 @@ export function parse(string) {
  */
 
 function getcontenttype (obj) {
-  var header
+  let header;
 
   if (typeof obj.getHeader === 'function') {
     // res-like
-    header = obj.getHeader('content-type')
+    header = obj.getHeader('content-type');
   } else if (typeof obj.headers === 'object') {
     // req-like
-    header = obj.headers && obj.headers['content-type']
+    header = obj.headers && obj.headers['content-type'];
   }
 
   if (typeof header !== 'string') {
-    throw new TypeError('content-type header is missing from object')
+    throw new TypeError('content-type header is missing from object');
   }
 
-  return header
+  return header;
 }
 
 /**
@@ -196,18 +196,18 @@ function getcontenttype (obj) {
  */
 
 function qstring (val) {
-  var str = String(val)
+  const str = String(val);
 
   // no need to quote tokens
   if (TOKEN_REGEXP.test(str)) {
-    return str
+    return str;
   }
 
   if (str.length > 0 && !TEXT_REGEXP.test(str)) {
-    throw new TypeError('invalid parameter value')
+    throw new TypeError('invalid parameter value');
   }
 
-  return '"' + str.replace(QUOTE_REGEXP, '\\$1') + '"'
+  return '"' + str.replace(QUOTE_REGEXP, '\\$1') + '"';
 }
 
 /**
@@ -215,6 +215,6 @@ function qstring (val) {
  * @private
  */
 function ContentType (type) {
-  this.parameters = Object.create(null)
-  this.type = type
+  this.parameters = {};
+  this.type = type;
 }

@@ -171,7 +171,7 @@ export function compileETag(val) {
  * @api private
  */
 export function compileQueryParser(val) {
-  var fn;
+  let fn;
 
   if (typeof val === 'function') {
     return val;
@@ -239,7 +239,7 @@ export function setCharset(type, charset) {
   }
 
   // parse type
-  var parsed = parse(type);
+  const parsed = parse(type);
 
   // set charset
   parsed.parameters.charset = charset;

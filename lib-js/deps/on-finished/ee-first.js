@@ -85,7 +85,7 @@ function listener (event, done) {
 
     // copy args to prevent arguments escaping scope
     const len = args.length;
-    for (var i = 0; i < len; ++i) {
+    for (let i = 0; i < len; ++i) {
       args[i] = arguments[i];
     }
 

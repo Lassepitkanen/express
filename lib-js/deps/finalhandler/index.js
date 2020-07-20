@@ -310,7 +310,7 @@ function setHeaders (res, headers) {
 
   const keys = Object.keys(headers);
   const len = keys.length;
-  for (var i = 0; i < len; ++i) {
+  for (let i = 0; i < len; ++i) {
     const key = keys[i]
     res.setHeader(key, headers[key])
   }

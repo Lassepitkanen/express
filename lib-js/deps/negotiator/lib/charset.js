@@ -84,8 +84,8 @@ function parseCharset(str, i) {
 
 function getCharsetPriority(charset, accepted, index) {
   let priority = {o: -1, q: 0, s: 0};
-
-  for (var i = 0; i < accepted.length; i++) {
+  const len = accepted.length;
+  for (let i = 0; i < len; ++i) {
     const spec = specify(charset, accepted[i], index);
 
     if (spec && (priority.s - spec.s || priority.q - spec.q || priority.o - spec.o) < 0) {

@@ -993,7 +993,7 @@ function getHeaderNames (res) {
  * @private
  */
 function hasListeners (emitter, type) {
-  var count = typeof emitter.listenerCount !== 'function'
+  const count = typeof emitter.listenerCount !== 'function'
     ? emitter.listeners(type).length
     : emitter.listenerCount(type);
 

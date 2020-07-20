@@ -11,9 +11,10 @@
  * Module dependencies.
  * @private
  */
+import * as url from 'url';
+const parse = url.parse;
+const Url = url.Url;
 
-var Url = require('url').Url;
-import { parse } from 'url';
 
 /**
  * Module exports.
