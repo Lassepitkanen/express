@@ -14,7 +14,7 @@
  */
 
 
-import * as path from 'path';
+import { dirname, basename, extname, join, resolve } from 'path';
 import * as fs from 'fs';
 import dbg from './deps/debug/index.js';
 const debug = dbg('express:view');
@@ -23,12 +23,6 @@ const debug = dbg('express:view');
  * Module variables.
  * @private
  */
-
-const dirname = path.dirname;
-const basename = path.basename;
-const extname = path.extname;
-const join = path.join;
-const resolve = path.resolve;
 
 
 /**

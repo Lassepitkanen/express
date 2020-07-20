@@ -26,7 +26,7 @@ function Utf16BEEncoder() {
 Utf16BEEncoder.prototype.write = function(str) {
   const buf = Buffer.from(str, 'ucs2');
   const len = buf.length;
-  for (var i = 0; i < len; i += 2) {
+  for (let i = 0; i < len; i += 2) {
     const tmp = buf[i]; buf[i] = buf[i+1]; buf[i+1] = tmp;
   }
   return buf;
