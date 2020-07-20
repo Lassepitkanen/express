@@ -41,16 +41,6 @@ function createApplication() {
 
   Object.setPrototypeOf(app, new App());
 
-  // expose the prototype that will get set on requests
-  app.request = Object.create(new req(), {
-    app: { configurable: true, enumerable: true, writable: true, value: app }
-  })
-
-  // expose the prototype that will get set on responses
-  app.response = Object.create(new res(), {
-    app: { configurable: true, enumerable: true, writable: true, value: app }
-  })
-
   app.init();
   return app;
 }

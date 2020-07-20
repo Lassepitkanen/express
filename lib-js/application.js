@@ -27,6 +27,8 @@ import { compileETag, compileQueryParser, compileTrust } from './utils.js';
 import { flatten } from './deps/array-flatten/index.js';
 import { resolve } from 'path';
 import { EventEmitter } from 'events';
+import { req } from './request.js';
+import { res } from './response.js';
 const slice = Array.prototype.slice;
 
 
@@ -49,12 +51,18 @@ const trustProxyDefaultSymbol = '@@symbol:trust_proxy_default';
 export class App extends EventEmitter {
   constructor() {
     super();
-    this.cache = {};
-    this.settings = {};
-    this.engines = {};
   }
 
   init() {
+    this.request = Object.create(new req(), {
+      app: { configurable: true, enumerable: true, writable: true, value: this }
+    })
+
+    // expose the prototype that will get set on responses
+    this.response = Object.create(new res(), {
+      app: { configurable: true, enumerable: true, writable: true, value: this }
+    })
+
     this.cache = {};
     this.engines = {};
     this.settings = {};
