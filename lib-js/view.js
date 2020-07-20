@@ -15,7 +15,7 @@
 
 
 import { dirname, basename, extname, join, resolve } from 'path';
-import * as fs from 'fs';
+import { statSync } from 'fs';
 import dbg from './deps/debug/index.js';
 const debug = dbg('express:view');
 
@@ -165,7 +165,7 @@ function tryStat(path) {
   debug('stat "%s"', path);
 
   try {
-    return fs.statSync(path);
+    return statSync(path);
   } catch (e) {
     return void 0;
   }

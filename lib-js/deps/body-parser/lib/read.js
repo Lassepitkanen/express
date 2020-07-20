@@ -14,7 +14,7 @@ import { createError } from '../../http-errors/index.js';
 import getBody from '../../raw-body/index.js';
 import iconv from '../../iconv-lite/index.js';
 import { onFinished } from '../../on-finished/index.js';
-import * as zlib from 'zlib';
+import { createInflate, createGunzip } from 'zlib';
 
 /**
  * Read a request into a buffer and parse.
@@ -148,12 +148,12 @@ function contentstream (req, debug, inflate) {
 
   switch (encoding) {
     case 'deflate':
-      stream = zlib.createInflate();
+      stream = createInflate();
       debug('inflate body');
       req.pipe(stream);
       break;
     case 'gzip':
-      stream = zlib.createGunzip();
+      stream = createGunzip();
       debug('gunzip body');
       req.pipe(stream);
       break;

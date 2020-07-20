@@ -15,7 +15,7 @@
 import { Accepts } from './deps/accepts/index.js';
 import { isIP, Socket } from 'net';
 import { typeofrequest } from './deps/type-is/index.js';
-import * as http from 'http';
+import { IncomingMessage } from 'http';
 import { fresh } from './deps/fresh/index.js';
 import { parseRange } from './deps/range-parser/index.js';
 import { parseUrl } from './deps/parseurl/index.js';
@@ -23,7 +23,7 @@ import { proxyaddr, alladdrs } from './deps/proxy-addr/index.js';
 
 
 
-export class Req extends http.IncomingMessage {
+export class Req extends IncomingMessage {
   constructor() {
     super(new Socket);
   }

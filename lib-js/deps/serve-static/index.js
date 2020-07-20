@@ -18,7 +18,7 @@ import encodeUrl from '../encodeurl/index.js';
 import { escapeHtml } from '../escape-html/index.js';
 import { parseUrl, parseUrlOriginal } from '../parseurl/index.js';
 import { resolve } from 'path';
-import * as url from 'url';
+import { format } from 'url';
 
 import { send } from '../send/index.js';
 
@@ -201,7 +201,7 @@ function createRedirectDirectoryListener () {
     originalUrl.pathname = collapseLeadingSlashes(originalUrl.pathname + '/');
 
     // reformat the URL
-    const loc = encodeUrl(url.format(originalUrl))
+    const loc = encodeUrl(format(originalUrl))
     const doc = createHtmlDocument('Redirecting', 'Redirecting to <a href="' + escapeHtml(loc) + '">' +
       escapeHtml(loc) + '</a>');
 

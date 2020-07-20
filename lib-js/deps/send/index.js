@@ -19,26 +19,16 @@ import encodeUrl from '../encodeurl/index.js';
 import { escapeHtml } from '../escape-html/index.js';
 import { etag } from '../etag/index.js';
 import { fresh } from '../fresh/index.js';
-import * as fs from 'fs';
+import { stat, createReadStream } from 'fs';
 import { mime } from '../mime/index.js'
 import ms from '../ms/index.js';
 import { onFinished } from '../on-finished/index.js';
 import { parseRange } from '../range-parser/index.js';
-import * as path from 'path';
-import * as statuses from '../statuses/index.js';
+import { extname, join, normalize, resolve, sep } from 'path';
+import { message } from '../statuses/index.js';
 import { Stream } from 'stream';
-import * as util from 'util';
+import { inherits } from 'util';
 
-
-/**
- * Path function references.
- * @private
- */
-const extname = path.extname;
-const join = path.join;
-const normalize = path.normalize;
-const resolve = path.resolve;
-const sep = path.sep;
 
 /**
  * Regular expression for identifying a bytes Range header.
@@ -157,7 +147,7 @@ function SendStream (req, path, options) {
  * Inherits from `Stream`.
  */
 
-util.inherits(SendStream, Stream);
+inherits(SendStream, Stream);
 
 /**
  * Enable or disable etag generation.
@@ -252,7 +242,7 @@ SendStream.prototype.error = function error (status, err) {
   }
 
   const res = this.res;
-  const msg = statuses.message[status] || String(status);
+  const msg = message[status] || String(status);
   const doc = createHtmlDocument('Error', escapeHtml(msg));
 
   // clear existing headers
@@ -697,7 +687,7 @@ SendStream.prototype.sendFile = function sendFile (path) {
   const self = this;
 
   debug('stat "%s"', path);
-  fs.stat(path, function onstat (err, stat) {
+  stat(path, function onstat (err, stat) {
     if (err && err.code === 'ENOENT' && !extname(path) && path[path.length - 1] !== sep) {
       // not found, check extensions
       return next(err);
@@ -718,7 +708,7 @@ SendStream.prototype.sendFile = function sendFile (path) {
     const p = path + '.' + self._extensions[i++];
 
     debug('stat "%s"', p)
-    fs.stat(p, function (err, stat) {
+    stat(p, function (err, stat) {
       if (err) return next(err);
       if (stat.isDirectory()) return next();
       self.emit('file', p, stat);
@@ -746,7 +736,7 @@ SendStream.prototype.sendIndex = function sendIndex (path) {
     const p = join(path, self._index[i]);
 
     debug('stat "%s"', p);
-    fs.stat(p, function (err, stat) {
+    stat(p, function (err, stat) {
       if (err) return next(err);
       if (stat.isDirectory()) return next();
       self.emit('file', p, stat);
@@ -771,7 +761,7 @@ SendStream.prototype.stream = function stream (path, options) {
   const res = this.res;
 
   // pipe
-  const stream = fs.createReadStream(path, options);
+  const stream = createReadStream(path, options);
   this.emit('stream', stream);
   stream.pipe(res);
 

@@ -11,7 +11,7 @@
  * Module dependencies.
  * @private
  */
-import * as crypto from 'crypto';
+import { createHash } from 'crypto';
 import { Stats } from 'fs';
 
 /**
@@ -36,8 +36,7 @@ function entitytag (entity) {
   }
 
   // compute hash of entity
-  const hash = crypto
-    .createHash('sha1')
+  const hash = createHash('sha1')
     .update(entity, 'utf8')
     .digest('base64')
     .substring(0, 27);

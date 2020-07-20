@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import types from './types.js';
 
 function Mime() {
@@ -50,7 +50,7 @@ Mime.prototype.load = function(file) {
   this._loading = file;
   // Read file and split into lines
   const map = {},
-    content = fs.readFileSync(file, 'ascii'),
+    content = readFileSync(file, 'ascii'),
     lines = content.split(/[\r\n]+/);
 
   lines.forEach(function(line) {

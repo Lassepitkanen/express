@@ -22,7 +22,7 @@ import { query } from './middleware/query.js';
 import dbg from './deps/debug/index.js';
 const debug = dbg('express:application');
 import { View } from './view.js';
-import * as http from 'http';
+import { createServer } from 'http';
 import { compileETag, compileQueryParser, compileTrust } from './utils.js';
 import { flatten } from './deps/array-flatten/index.js';
 import { resolve } from 'path';
@@ -596,7 +596,7 @@ export class App extends EventEmitter {
    * @public
    */
   listen() {
-    const server = http.createServer(this);
+    const server = createServer(this);
     return server.listen.apply(server, arguments);
   }
 

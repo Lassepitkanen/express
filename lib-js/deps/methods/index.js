@@ -12,14 +12,14 @@
  * @private
  */
 
-import * as http from 'http';
+import { METHODS } from 'http';
 
 /**
  * Module exports.
  * @public
  */
 
-export const methods = http.METHODS.map(method => method.toLowerCase()) || basicMethods;
+export const methods = METHODS.map(method => method.toLowerCase()) || basicMethods;
 
 
 /**

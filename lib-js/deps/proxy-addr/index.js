@@ -12,14 +12,14 @@
  * @private
  */
 import forwarded from '../forwarded/index.js';
-import * as ipaddr from '../ipaddr.js/index.js';
+import { isValid, parse } from '../ipaddr.js/index.js';
 /**
  * Variables.
  * @private
  */
 const DIGIT_REGEXP = /^[0-9]+$/;
-const isip = ipaddr.isValid;
-const parseip = ipaddr.parse;
+const isip = isValid;
+const parseip = parse;
 
 /**
  * Pre-defined IP ranges.

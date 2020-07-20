@@ -15,7 +15,7 @@ import { Buffer } from 'buffer';
 import { contentDisposition } from './deps/content-disposition/index.js';
 import encodeUrl from './deps/encodeurl/index.js';
 import { escapeHtml } from './deps/escape-html/index.js';
-import * as http from 'http';
+import { ServerResponse, IncomingMessage } from 'http';
 import { onFinished } from './deps/on-finished/index.js';
 import * as statuses from './deps/statuses/index.js';
 import { sign } from './deps/cookie-signature/index.js';
@@ -42,9 +42,9 @@ const charsetRegExp = /;\s*charset\s*=/;
 // module.exports = res
 
 
-export class Res extends http.ServerResponse {
+export class Res extends ServerResponse {
   constructor() {
-    super(new http.IncomingMessage());
+    super(new IncomingMessage());
   }
 
   /**

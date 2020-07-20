@@ -2,8 +2,8 @@
  * Module dependencies.
  */
 
-import * as tty from 'tty';
-import * as util from 'util';
+import { isatty } from 'tty';
+import { inspect, format } from 'util';
 
 
 /**
@@ -139,7 +139,7 @@ const inspectOpts = Object.keys(process.env).filter(key => {
 function useColors() {
 	return 'colors' in inspectOpts ?
 		Boolean(inspectOpts.colors) :
-		tty.isatty(process.stderr.fd);
+		isatty(process.stderr.fd);
 }
 
 /**
@@ -175,7 +175,7 @@ function getDate() {
  */
 
 export function log(...args) {
-	return process.stderr.write(util.format(...args) + '\n');
+	return process.stderr.write(format(...args) + '\n');
 }
 
 /**
@@ -244,7 +244,7 @@ export default formatters;
 
 formatters.o = function(v) {
 	this.inspectOpts.colors = this.useColors;
-	return util.inspect(v, this.inspectOpts)
+	return inspect(v, this.inspectOpts)
 		.replace(/\s*\n\s*/g, ' ');
 };
 
@@ -254,5 +254,5 @@ formatters.o = function(v) {
 
 formatters.O = function(v) {
 	this.inspectOpts.colors = this.useColors;
-	return util.inspect(v, this.inspectOpts);
+	return inspect(v, this.inspectOpts);
 };

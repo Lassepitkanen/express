@@ -21,7 +21,7 @@ import { parse, format } from './deps/content-type/index.js';
 import { mime } from './deps/mime/index.js';
 import { compile } from './deps/proxy-addr/index.js';
 import qs from './deps/qs/index.js';
-import * as querystring from 'querystring';
+import { parse as querystringParse } from 'querystring';
 
 
 /**
@@ -179,7 +179,7 @@ export function compileQueryParser(val) {
 
   switch (val) {
     case true:
-      fn = querystring.parse;
+      fn = querystringParse;
       break;
     case false:
       fn = newObject;
@@ -188,7 +188,7 @@ export function compileQueryParser(val) {
       fn = parseExtendedQueryString;
       break;
     case 'simple':
-      fn = querystring.parse;
+      fn = querystringParse;
       break;
     default:
       throw new TypeError('unknown value for query parser function: ' + val);

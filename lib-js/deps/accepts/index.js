@@ -149,7 +149,7 @@ export class Accepts {
 
     // support flattened arguments
     if (charsets && !Array.isArray(charsets)) {
-      charsets = new Array(arguments.length)
+      charsets = new Array(arguments.length);
       const len = charsets.length;
       for (let i = 0; i < len; ++i) {
         charsets[i] = arguments[i];

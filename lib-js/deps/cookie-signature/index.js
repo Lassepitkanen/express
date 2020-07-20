@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-import * as crypto from 'crypto';
+import { timingSafeEqual, createHmac } from 'crypto';
 
 /**
  * Sign the given `val` with `secret`.
@@ -15,8 +15,7 @@ import * as crypto from 'crypto';
 export function sign(val, secret){
   if ('string' != typeof val) throw new TypeError("Cookie value must be provided as a string.");
   if ('string' != typeof secret) throw new TypeError("Secret string must be provided.");
-  return val + '.' + crypto
-    .createHmac('sha256', secret)
+  return val + '.' + createHmac('sha256', secret)
     .update(val)
     .digest('base64')
     .replace(/\=+$/, '');
@@ -40,5 +39,5 @@ export function unsign(val, secret){
     , valBuffer = Buffer.alloc(macBuffer.length);
 
   valBuffer.write(val);
-  return crypto.timingSafeEqual(macBuffer, valBuffer) ? str : false;
+  return timingSafeEqual(macBuffer, valBuffer) ? str : false;
 }
